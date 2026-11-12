@@ -1,0 +1,13 @@
+{
+  "name": "lab2",
+  "version": "1.0.0",
+  "description": "Lab2: graphic object editor",
+  "main": "Lab2.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^45.0.0"
+  }
+}
