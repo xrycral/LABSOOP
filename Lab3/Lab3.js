@@ -78,11 +78,9 @@ class MainApp {
     this.win.webContents.send('shape-selected', id);
   }
 
-  updateMenuMarks() {
-    for (const s of SHAPES) {
-      const item = this.menu.getMenuItemById('shape-' + s.id);
-      if (item) item.checked = s.id === this.currentId;
-    }
+    updateMenuMarks() {
+    this.menu = this.buildMenu();
+    Menu.setApplicationMenu(this.menu);
   }
 
   onShowAbout() {
