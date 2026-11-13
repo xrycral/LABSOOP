@@ -1,0 +1,26 @@
+html, body { margin: 0; height: 100%; overflow: hidden; background: #fff; font-family: sans-serif; }
+body { display: flex; flex-direction: column; }
+
+#toolbar {
+  display: flex; gap: 4px; padding: 4px 6px;
+  background: #f0f0f0; border-bottom: 1px solid #c8c8c8;
+}
+#toolbar button {
+  width: 34px; height: 34px; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: #fff; border: 1px solid #b0b0b0; border-radius: 4px;
+  color: #222; cursor: pointer;
+}
+#toolbar button:hover { background: #e6f0ff; }
+#toolbar button.active { background: #cfe3ff; border-color: #4a86e8; }
+#toolbar svg { width: 22px; height: 22px; }
+
+#workspace { flex: 1; min-height: 0; position: relative; overflow: hidden; }
+canvas { position: absolute; top: 0; left: 0; cursor: crosshair; }
+
+.tooltip {
+  position: fixed; z-index: 10; padding: 3px 8px;
+  background: #333; color: #fff; font-size: 12px; border-radius: 3px;
+  pointer-events: none; white-space: nowrap;
+}
+.tooltip[hidden] { display: none; }

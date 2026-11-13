@@ -1,0 +1,13 @@
+{
+  "name": "lab3",
+  "version": "1.0.0",
+  "description": "Lab3: graphic editor with toolbar",
+  "main": "Lab3.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^45.0.0"
+  }
+}
