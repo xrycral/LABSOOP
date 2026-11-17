@@ -1,0 +1,13 @@
+{
+  "name": "lab4",
+  "version": "1.0.0",
+  "description": "Lab4: graphic editor, refactored for easy adding of new shapes",
+  "main": "Lab4.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^45.0.0"
+  }
+}
