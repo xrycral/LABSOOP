@@ -1,4 +1,5 @@
 const { app, BrowserWindow, Menu } = require('electron');
+const path = require('path');
 const module1 = require('./module1');
 const module2 = require('./module2');
 const module3 = require('./module3');
@@ -6,9 +7,7 @@ const module3 = require('./module3');
 let mainWin;
 
 function showResult(text) {
-  mainWin.webContents.executeJavaScript(
-    `document.getElementById('result').textContent = ${JSON.stringify(text)};`
-  );
+  mainWin.webContents.send('show-result', text);
 }
 
 function work1() {
@@ -25,7 +24,19 @@ function work2() {
 }
 
 app.whenReady().then(() => {
-  mainWin = new BrowserWindow({ width: 800, height: 600, title: 'Lab1' });
+  mainWin = new BrowserWindow({
+    width: 800,
+    height: 600,
+    show: false,
+    title: 'Lab1',
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true
+    }
+  });
+  mainWin.once('ready-to-show', () => mainWin.show());
   mainWin.loadFile('index.html');
 
   Menu.setApplicationMenu(Menu.buildFromTemplate([

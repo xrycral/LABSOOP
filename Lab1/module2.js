@@ -1,23 +1,18 @@
-const { openDialog } = require('./utils');
+const { openDialog, onAction } = require('./utils');
 
-const html = `
-<body style="font-family:sans-serif;padding:16px">
+const markup = `
   <p>Крок 1 з 2</p>
-  <div style="margin-top:40px;text-align:right">
-    <button id="next">Далі &gt;</button>
-    <button id="no">Відміна</button>
-  </div>
-  <script>
-    const { ipcRenderer } = require('electron');
-    document.getElementById('next').onclick = () => ipcRenderer.send('next');
-    document.getElementById('no').onclick = () => ipcRenderer.send('cancel');
-  </script>
-</body>`;
+  <div class="buttons" style="margin-top:40px">
+    <button type="button" data-action="next">Далі &gt;</button>
+    <button type="button" data-action="cancel">Відміна</button>
+  </div>`;
 
 function show(parent, { onNext }) {
-  const win = openDialog(parent, html, { title: 'Робота2: крок 1' });
-  win.webContents.ipc.on('next', () => { onNext(); });
-  win.webContents.ipc.on('cancel', () => win.close());
+  const win = openDialog(parent, markup, { title: 'Робота2: крок 1' });
+  onAction(win, (action) => {
+    if (action === 'next') onNext();
+    else if (action === 'cancel') win.close();
+  });
 }
 
 module.exports = { show };
