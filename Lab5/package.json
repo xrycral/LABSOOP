@@ -1,0 +1,13 @@
+{
+  "name": "lab5",
+  "version": "1.0.0",
+  "description": "Lab5: graphic editor with a table window, Singleton and file saving",
+  "main": "Lab5.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^45.0.0"
+  }
+}

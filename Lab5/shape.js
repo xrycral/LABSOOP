@@ -1,0 +1,143 @@
+class Shape {
+  constructor() {
+    if (new.target === Shape) {
+      throw new Error('Shape – абстрактний клас, створювати його не можна');
+    }
+    this.x1 = 0; this.y1 = 0;
+    this.x2 = 0; this.y2 = 0;
+    this.style = { outline: 'black', fill: null };
+  }
+
+  get needsDrag() { return true; }
+  get typeId() { return this.constructor.typeId; }
+
+  setStart(x, y) { this.x1 = x; this.y1 = y; this.x2 = x; this.y2 = y; }
+  setEnd(x, y) { this.x2 = x; this.y2 = y; }
+
+  applyRubberStyle(ctx) {
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([6, 4]);
+  }
+
+  applyOutlineStyle(ctx) {
+    ctx.strokeStyle = this.style.outline;
+    ctx.lineWidth = 1;
+    ctx.setLineDash([]);
+  }
+
+  showSelected(ctx) {
+    ctx.save();
+    ctx.shadowColor = 'red';
+    ctx.shadowBlur = 12;
+    this.show(ctx);
+    ctx.restore();
+  }
+
+  show(ctx) { throw new Error('show() не реалізовано'); }
+  showRubber(ctx) { throw new Error('showRubber() не реалізовано'); }
+}
+
+class PointShape extends Shape {
+  get needsDrag() { return false; }
+
+  show(ctx) {
+    ctx.fillStyle = this.style.outline;
+    ctx.beginPath();
+    ctx.arc(this.x1, this.y1, 2.5, 0, 2 * Math.PI);
+    ctx.fill();
+  }
+
+  showRubber(ctx) {
+    this.applyRubberStyle(ctx);
+    ctx.beginPath();
+    ctx.arc(this.x1, this.y1, 2.5, 0, 2 * Math.PI);
+    ctx.stroke();
+  }
+}
+
+class LineShape extends Shape {
+  show(ctx) {
+    this.applyOutlineStyle(ctx);
+    ctx.beginPath();
+    ctx.moveTo(this.x1, this.y1);
+    ctx.lineTo(this.x2, this.y2);
+    ctx.stroke();
+  }
+
+  showRubber(ctx) {
+    this.applyRubberStyle(ctx);
+    ctx.beginPath();
+    ctx.moveTo(this.x1, this.y1);
+    ctx.lineTo(this.x2, this.y2);
+    ctx.stroke();
+  }
+}
+
+class RectShape extends Shape {
+  constructor() {
+    super();
+    this.style.fill = '#ffa500';
+  }
+
+  bounds() {
+    return {
+      left: Math.min(this.x1, this.x2),
+      top: Math.min(this.y1, this.y2),
+      w: Math.abs(this.x2 - this.x1),
+      h: Math.abs(this.y2 - this.y1)
+    };
+  }
+
+  show(ctx) {
+    const b = this.bounds();
+    if (this.style.fill) {
+      ctx.fillStyle = this.style.fill;
+      ctx.fillRect(b.left, b.top, b.w, b.h);
+    }
+    this.applyOutlineStyle(ctx);
+    ctx.strokeRect(b.left, b.top, b.w, b.h);
+  }
+
+  showRubber(ctx) {
+    const b = this.bounds();
+    this.applyRubberStyle(ctx);
+    ctx.strokeRect(b.left, b.top, b.w, b.h);
+  }
+}
+
+class EllipseShape extends Shape {
+  geometry() {
+    return {
+      cx: this.x1,
+      cy: this.y1,
+      rx: Math.abs(this.x2 - this.x1),
+      ry: Math.abs(this.y2 - this.y1)
+    };
+  }
+
+  show(ctx) {
+    const g = this.geometry();
+    ctx.beginPath();
+    ctx.ellipse(g.cx, g.cy, g.rx, g.ry, 0, 0, 2 * Math.PI);
+    if (this.style.fill) {
+      ctx.fillStyle = this.style.fill;
+      ctx.fill();
+    }
+    this.applyOutlineStyle(ctx);
+    ctx.stroke();
+  }
+
+  showRubber(ctx) {
+    const g = this.geometry();
+    this.applyRubberStyle(ctx);
+    ctx.beginPath();
+    ctx.ellipse(g.cx, g.cy, g.rx, g.ry, 0, 0, 2 * Math.PI);
+    ctx.stroke();
+  }
+}
+
+ShapeFactory.register('point', PointShape);
+ShapeFactory.register('line', LineShape);
+ShapeFactory.register('rect', RectShape);
+ShapeFactory.register('ellipse', EllipseShape);

@@ -1,0 +1,11 @@
+html, body { margin: 0; height: 100%; font-family: sans-serif; background: #fff; }
+#table-container { display: flex; flex-direction: column; height: 100%; padding: 8px; box-sizing: border-box; }
+.scroll { flex: 1; min-height: 0; overflow: auto; border: 1px solid #c8c8c8; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { position: sticky; top: 0; background: #f0f0f0; text-align: left; padding: 5px 8px; border-bottom: 1px solid #c8c8c8; }
+td { padding: 4px 8px; border-bottom: 1px solid #eee; }
+tbody tr { cursor: pointer; }
+tbody tr:hover { background: #eef5ff; }
+tbody tr.selected { background: #cfe3ff; }
+button { margin-top: 8px; padding: 6px 12px; }
+button:disabled { opacity: 0.5; }
